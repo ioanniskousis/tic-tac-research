@@ -6,13 +6,13 @@ $SCREEN_WIDTH =  SCREEN_SIZE[1]
 def init_cell_size(cs)
   cs = ((cs / 2 ) * 2) + 1
   if $SCREEN_HEIGHT < ((cs * 3) + 10)
-    cs = (($SCREEN_HEIGHT / 2) - 10) / 3
+    cs = ($SCREEN_HEIGHT - 10) / 3
   end
   if $SCREEN_WIDTH < ((cs * 3 * 2) + 2)
-    cs = (($SCREEN_WIDTH / 2) - 2) / 6
+    cs = ($SCREEN_WIDTH - 2) / 6
   end
   if $SCREEN_HEIGHT < ((cs * 3) + 10)
-    cs = (($SCREEN_HEIGHT / 2) - 10) / 3
+    cs = ($SCREEN_HEIGHT - 10) / 3
   end
   cs
 end
@@ -30,9 +30,9 @@ def game_status()
   dia_2 = [] << $game[2] << $game[4] << $game[6]
 
   if row_1.all?(1) || row_2.all?(1) || row_3.all?(1) || col_1.all?(1) || col_2.all?(1) || col_3.all?(1) || dia_1.all?(1) || dia_2.all?(1)
-    return ['OVER', "Player 1 is the winner (X)"]
+    return ['OVER', "Player with #{$CHAR_X} is the winner"]
   elsif row_1.all?(2) || row_2.all?(2) || row_3.all?(2) || col_1.all?(2) || col_2.all?(2) || col_3.all?(2) || dia_1.all?(2) || dia_2.all?(2)
-    return ['OVER', "Player 2 is the winner \u2b24"]
+    return ['OVER', "Player with #{$CHAR_O} is the winner"]
   end
   empty_cells = []
   $game.each_with_index do |item, i| 
@@ -51,20 +51,25 @@ def puts_center(str)
   puts String.new(" " * padding) + str
 end
 
-CELL_SIZE = init_cell_size(10)
-CELL_SPACE = String.new(" " * ((CELL_SIZE * 2) + 1))
-CHECK_SPACE_X = String.new(" " * CELL_SIZE) + "\u2573" + String.new(" " * CELL_SIZE)
-CHECK_SPACE_O = String.new(" " * CELL_SIZE) + "\u2b24" + String.new(" " * CELL_SIZE)
-CELL_SEPARATOR = String.new("\u2501" * ((CELL_SIZE * 2) + 1))
+$CHAR_X = "\u2573"
+$CHAR_O = "\u2b24"
+HORZ = "\u2501"
 VERTICAL = "\u2503"
 CROSS = "\u254b"
+
+CELL_SIZE = init_cell_size(10)
+CELL_SPACE = String.new(" " * ((CELL_SIZE * 2) + 1))
+CHECK_SPACE_X = String.new(" " * CELL_SIZE) + $CHAR_X + String.new(" " * CELL_SIZE)
+CHECK_SPACE_O = String.new(" " * CELL_SIZE) + $CHAR_O + String.new(" " * CELL_SIZE)
+CELL_SEPARATOR = String.new(HORZ * ((CELL_SIZE * 2) + 1))
+
 GRID_ROW = CELL_SPACE + VERTICAL + CELL_SPACE + VERTICAL + CELL_SPACE
 GRID_SEPARATOR = CELL_SEPARATOR + CROSS + CELL_SEPARATOR + CROSS + CELL_SEPARATOR
 PROMPT = "Enter cell number to check"
 
 player_1_is_playing = true
-PLAYER_1_LABEL = "Player for X"
-PLAYER_2_LABEL = "Player for \u2b24 "
+PLAYER_1_LABEL = "Player for #{$CHAR_X}"
+PLAYER_2_LABEL = "Player for #{$CHAR_O}"
 $game = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 game_is_over = false
