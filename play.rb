@@ -3,6 +3,7 @@ SCREEN_SIZE = IO.console.winsize
 $SCREEN_HEIGHT =  SCREEN_SIZE[0]
 $SCREEN_WIDTH =  SCREEN_SIZE[1]
 
+
 def init_cell_size(cs)
   cs = ((cs / 2 ) * 2) + 1
   if $SCREEN_HEIGHT < ((cs * 3) + 10)
@@ -75,6 +76,8 @@ $game = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 game_is_over = false
 status = []
 loop do
+  CELL_SIZE = init_cell_size(10)
+  
   system("reset")
   puts
 

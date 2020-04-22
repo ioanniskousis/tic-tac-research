@@ -4,56 +4,70 @@ class Game
   NO_WINNER = ['OVER', "NO WINNER"]
   CONTINUE = ['CONTINUE', ""]
 
-  checks = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @@checks = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @@player = 1
 
-  # attr_reader :current_user
-
-  # self.current_user = 1
-
-  public
-  def current_player
-    current_user
+  def self.current_player
+    @@player
   end
 
   def self.user_moves
-    checks
+    @@checks
   end
 
-  def check(cell, user)
-    checks[cell - 1] = user
-    current_user = user == 2 ? 1 : 2
+  def self.check(cell)
+    cell = cell.to_i
+    return false unless cell.positive?
+    return false if @@checks[cell - 1] != 0
+    @@checks[cell - 1] = @@player
+    @@player = @@player == 1 ? 2 : 1
+    true
   end
 
-  def available_cells
-    numbers = []
-    checks.each_with_index do |item, i| 
-      if item == 0
-        numbers << (i + 1)
-      end
-    end
-    numbers
-  end
+  # def self.available_cells
+  #   numbers = []
+  #   @@checks.each_with_index do |item, i| 
+  #     if item == 0
+  #       numbers << (i + 1)
+  #     end
+  #   end
+  #   numbers
+  # end
 
-  def status
-    grid_sets = all_sets
+  def self.status
+    grid_sets = self.all_sets
+    # if grid_sets.any? { |set| set.all?{ |check| check == 1 } } 
+    #   puts grid_sets
+    #   c = gets
+
+    # end
+    # if grid_sets.any? { |set| set.all?{ |check| check == 2 } } 
+    #   puts grid_sets
+    #   c = gets
+
+    # end
+    # if @@checks.none?(0) 
+    #   puts @@checks
+    #   c= gets
+    # end
     return WINNER_1 if grid_sets.any? { |set| set.all?{ |check| check == 1 } }
     return WINNER_2 if grid_sets.any? { |set| set.all?{ |check| check == 2 } }
-    return NO_WINNER if checks.none?(0)
+    return NO_WINNER if @@checks.none?(0)
     return CONTINUE
   end
 
   private 
-  def all_sets
-    row_1 = [] << checks[0] << checks[1] << checks[2]
-    row_2 = [] << checks[3] << checks[4] << checks[5]
-    row_3 = [] << checks[6] << checks[7] << checks[8]
+  def self.all_sets
+    row_1 = [] << @@checks[0] << @@checks[1] << @@checks[2]
+    row_2 = [] << @@checks[3] << @@checks[4] << @@checks[5]
+    row_3 = [] << @@checks[6] << @@checks[7] << @@checks[8]
   
-    col_1 = [] << checks[0] << checks[3] << checks[6]
-    col_2 = [] << checks[1] << checks[4] << checks[7]
-    col_3 = [] << checks[2] << checks[5] << checks[8]
+    col_1 = [] << @@checks[0] << @@checks[3] << @@checks[6]
+    col_2 = [] << @@checks[1] << @@checks[4] << @@checks[7]
+    col_3 = [] << @@checks[2] << @@checks[5] << @@checks[8]
   
-    dia_1 = [] << checks[0] << checks[4] << checks[8]
-    dia_2 = [] << checks[2] << checks[4] << checks[6]
+    dia_1 = [] << @@checks[0] << @@checks[4] << @@checks[8]
+    dia_2 = [] << @@checks[2] << @@checks[4] << @@checks[6]
 
     sets =[]
 

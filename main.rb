@@ -1,16 +1,24 @@
-require_relative 'user_interface'
+require_relative 'interface'
 require_relative 'game'
 
-terminate_app  = false
+keep_playing  = true
 
-loop do
+while keep_playing do
   
-  # UserInterface.draw_grid(Game.user_moves)
+  interface = UserInterface.setup(Game.user_moves, Game.current_player)
+  
+  interface.each { |line| puts line }
 
-  puts "Enter command - user " + Game.current_player
   user_input = gets.chomp
+  if Game.check(user_input)
+    status = Game.status
+    if status[0] == "OVER"
+      puts status
+      puts "game over"
+      c = gets
 
-  terminate_app = user_input[0].downcase == 'z' if user_input.size.positive?
+    end
+  end
 
-  break if terminate_app
+  keep_playing = user_input[0].downcase != 'z' if user_input.size.positive?
 end
